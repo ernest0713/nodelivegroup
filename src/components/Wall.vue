@@ -58,7 +58,8 @@
             </li>
           </ul>
         </div>
-        <div class="col-md-5 d-md-block d-none mt-3">
+        <div class="d-none mt-3">
+          <!-- col-md-5 d-md-block  -->
           <div class="border border-dark border-2 px-4 py-4">
             <div class="d-grid gap-2 mb-4">
               <button
