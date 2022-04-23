@@ -8,7 +8,8 @@ import VueRouter from 'vue-router'
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
-Vue.use(axios, VueAxios)
+Vue.use(VueAxios, axios)
+Vue.use(require('vue-moment'))
 
 const routes = [
   {
