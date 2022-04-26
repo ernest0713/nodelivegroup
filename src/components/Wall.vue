@@ -12,8 +12,8 @@
             <div class="col-md-8">
               <div class="input-group mb-3">
                 <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="搜尋貼文" aria-label="Recipient's username" aria-describedby="button-addon2">
-                <div class="input-group-append">
+                <input type="text" @keyup.enter="getdata()" v-model.trim="keyword" class="form-control" placeholder="搜尋貼文" aria-label="Recipient's username" aria-describedby="button-addon2">
+                <div class="input-group-append" @click="getdata()">
                     <button class="btn btn-outline-secondary py-0" type="button" id="button-addon2">
                         <span class="material-icons">
                             search
@@ -24,7 +24,7 @@
               </div>
             </div>
           </div>
-          <ul class="p-0">
+          <ul v-if="postsData.length > 0" class="p-0">
             <li v-for="(item) in postsData" :key="item.id" class="card h-100 py-4 px-4 mb-3 border-2 shadow-black" >
               <div class="d-flex align-items-center mb-3">
                 <img class="mr-3 rounded-circle" :src="item.userPhoto" alt="userImg" style="width: 50px; height: 50px;"/>
@@ -36,6 +36,9 @@
               <p>{{ item.content }}.&lt;</p>
               <img :src="item.image" alt="photo1" class="img-fluid rounded" />
             </li>
+          </ul>
+          <ul v-else class="list-unstyled p-0">
+            <li>查無資料</li>
           </ul>
         </div>
         <div class="d-none mt-3">
@@ -144,13 +147,14 @@
 export default {
   data () {
     return {
-      postsData: []
+      postsData: [],
+      keyword: ''
     }
   },
   methods: {
     getdata () {
       const filter = {
-        keyword: '', // 搜尋關鍵字
+        keyword: this.keyword, // 搜尋關鍵字
         sortby: 'datetime_pub', // 本次只提供最新貼文排序
         limit: '', // 每頁幾筆，本次可不提供或強制default
         page: '' // 第幾頁開始，本次可不提供或強制default 或者可改 offset Lastid 之類
@@ -160,7 +164,7 @@ export default {
       this.$http.post(api, filter)
         .then((res) => {
           this.postsData = res.data.payload.posts
-          console.log(this.postsData, typeof (this.postsData[0].datetime_pub))
+          // console.log(this.postsData)
         })
         .catch(e => console.log(e))
     }

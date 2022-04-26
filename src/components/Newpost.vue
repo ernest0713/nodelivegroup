@@ -13,26 +13,60 @@
             ></div>
           </div>
           <div class="card border border-dark shadow-black p-5">
-            <form class="needs-validation" novalidate>
+            <form class="needs-validation">
               <div class="form-group mb-3">
-                <label for="content">貼文內容</label>
-                <textarea
-                  class="form-control border border-dark"
-                  id="content"
-                  rows="5"
-                  placeholder="輸入您的貼文內容"
-                ></textarea>
+                <ValidationProvider rules="required" v-slot="{ errors }">
+                  <div class="input-group mb-2">
+                    <label for="userName">
+                      使用者名稱
+                      <span class="text-danger">*</span>
+                    </label>
+                    <input v-model="postData.userName" type="text" class="w-100 p-2" name="userName" placeholder="請輸入姓名">
+                    <span class="text-danger">{{ errors[0] }}</span>
+                  </div>
+                </ValidationProvider>
+                <ValidationProvider rules="required" v-slot="{ errors }">
+                  <div class="input-group mb-2">
+                    <label for="userPhoto">
+                      使用者圖片
+                      <span class="text-danger">*</span>
+                    </label>
+                    <input v-model="postData.userPhoto" type="text" class="w-100" name="userPhoto" placeholder="請輸入大頭照網址">
+                    <span class="text-danger">{{ errors[0] }}</span>
+                  </div>
+                </ValidationProvider>
+                <ValidationProvider rules="required" v-slot="{ errors }">
+                  <label for="content">
+                    貼文內容
+                    <span class="text-danger">*</span>
+                  </label>
+                  <span class="ml-3 text-danger">{{ errors[0] }}</span>
+                  <textarea
+                    v-model="postData.content"
+                    class="form-control border border-dark"
+                    id="content"
+                    rows="5"
+                    placeholder="輸入您的貼文內容"
+                  ></textarea>
+                </ValidationProvider>
               </div>
-              <div class="input-group mb-2">
-                <label class="btn btn-dark">
-                  <input
-                    id="upload_img"
-                    style="display: none"
-                    type="file"
-                    class="is-valid"
-                  />
+              <div class="input-group mb-2 flex-column">
+                <label for="imgUpload">
                   上傳圖片
                 </label>
+                <ValidationProvider class="d-block" rules="required" v-slot="{ errors }">
+                  <input
+                    v-model.lazy="src"
+                    class="d-block w-100 p-2"
+                    id="upload_img"
+                    type="text"
+                    name="imgUpload"
+                    placeholder="請輸入網址"
+                  />
+                  <ul class="list-unstyled">
+                    <li class="text-danger" v-for="error in errors" :key="error">{{ error }}</li>
+                  </ul>
+                </ValidationProvider>
               </div>
               <img :src="src" class="w-100 img-fluid mb-2" />
               <p class="text-danger text-center mb-2 d-none">
@@ -42,7 +76,7 @@
               </p>
               <div class="d-flex justify-content-center mt-2">
                 <a
-                  @click.prevent="sendData()"
+                  @click.prevent="sendData"
                   class="w-75 btn btn-outline-dark border border-dark"
                 >
                   送出貼文
@@ -108,17 +142,46 @@
 </template>
 
 <script>
+import { ValidationProvider, extend } from 'vee-validate'
+import { required } from 'vee-validate/dist/rules'
+
+extend('required', {
+  ...required,
+  message: '欄位需填寫'
+})
+
+extend('https', {
+  validate: value => {
+    return new RegExp(/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/).test(value)
+  },
+  message: '請輸入正確網址'
+})
+
 export default {
   data () {
     return {
-      data: 'hello',
-      src: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
+      postData: {
+        conten: '',
+        image: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
+        userName: 'Rax Xu',
+        userPhoto: 'https://i.pravatar.cc/50'
+      },
+      src: ''
     }
   },
+  components: {
+    ValidationProvider
+  },
   methods: {
-    sendata () {
-      const api = 'https://localhost:27017/nodelive'
-      console.log(this.data, api)
+    sendData () {
+      const addPoatApi = 'https://safe-brushlands-13562.herokuapp.com/posts/addPost'
+      const postData = this.postData
+      this.$http.post(addPoatApi, postData)
+        .then(res => {
+          this.$router.push('wall')
+          // console.log(res)
+        })
+        .catch(e => console.log(e))
     }
   }
 }
