@@ -1,24 +1,29 @@
 <template>
-  <div class="hello">
+  <div>
     <Navbar/>
-    <ul class="d-flex justify-content-center mt-5">
-      <li><router-link to="/wall">動態牆</router-link></li>
-      <li><router-link to="/newpost">張貼動態</router-link></li>
-    </ul>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-8">
+          <router-view></router-view>
+        </div>
+        <Sidemenu/>
+      </div>
+    </div>
+    <BottomMenu/>
   </div>
 </template>
 
 <script>
 import Navbar from '@/components/Navbar.vue'
+import Sidemenu from '@/components/Sidemenu.vue'
+import BottomMenu from '@/components/BottomMenu.vue'
 
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  },
   components: {
     // HelloWorld,
-    Navbar
+    Navbar,
+    Sidemenu,
+    BottomMenu
   }
 }
 </script>

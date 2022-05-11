@@ -2,10 +2,10 @@
   <div>
     <section class="vh-100 d-flex justify-content-center align-items-center">
       <div
-        class="card card-login px-lg-7 px-3 bg-light border-2 shadow-gray rounded-0 py-7"
+        class="card card-login px-lg-7 px-md-3 px-1 bg-light border-2 shadow-gray rounded-0 py-7 mx-md-0 mx-2"
         style="width: 56rem"
       >
-        <div class="row px-5">
+        <div class="row px-md-5 px-2">
           <div class="col-md-6 mr-9 d-md-block d-none">
             <img src="../assets/banner.png" alt="signin" class="img-fluid" />
           </div>
@@ -64,7 +64,7 @@
                 </button>
               </div>
               <div class="text-center">
-                <a class="text-dark" href="./register.html">註冊帳號</a>
+                  <router-link to="/register" class="text-dark">註冊帳號</router-link>
               </div>
             </form>
             </ValidationObserver>
@@ -111,7 +111,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .card-login {
   box-shadow: -8px 8px 0px #00040029;
 }

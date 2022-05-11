@@ -1,19 +1,25 @@
 <template>
-    <div>
-        <section>
+  <div>
+    <section>
       <nav
         class="navbar navbar-expand-lg navbar-light border-bottom border-3 border-dark"
       >
-        <div class="container px-lg-12">
-          <h1 class="font-paytone">
-            <router-link to="/" class="navbar-brand fs-1">MetaWall </router-link>
+        <div class="container">
+          <h1 class="fontPaytone mb-0">
+            <router-link to="/" class="navbar-brand"
+              >MetaWall
+            </router-link>
             <!-- <a class="navbar-brand fs-1" href="#">MetaWall</a> -->
           </h1>
           <div class="d-flex align-items-center">
-            <img src="https://i.pravatar.cc/50" alt="user1" class="me-2 img-fluid rounded-circle" />
-            <div class="dropdown bg-white me-2">
+            <img
+              src="https://i.pravatar.cc/50"
+              alt="user1"
+              class="me-2 img-fluid rounded-circle"
+            />
+            <div class="dropdown bg-white mx-2">
               <button
-                class="btn btn-white border-0 text-decoration-underline fw-bolder font-azeret"
+                class="btn btn-white member"
                 type="button"
                 id="dropdownMenuButton1"
                 data-bs-toggle="dropdown"
@@ -40,5 +46,20 @@
         </div>
       </nav>
     </section>
-    </div>
+  </div>
 </template>
+
+<style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Paytone+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@700&family=Paytone+One&display=swap');
+.navbar-brand{
+  font: normal normal normal 26px/36px Paytone One !important;
+}
+.member{
+  font: normal normal bold 16px/19px Azeret Mono;
+}
+.member{
+  border-radius: 0px;
+  border-bottom: 2px solid #000400;
+}
+</style>

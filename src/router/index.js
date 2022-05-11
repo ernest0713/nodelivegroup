@@ -6,26 +6,28 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
     component: () => import('../components/Home.vue'),
-    meta: { requiresAuth: true },
+    meta: {
+      requiresAuth: true
+    },
     children: [
       {
-        path: '/wall',
-        name: 'Wall',
+        path: 'wall',
         component: () => import('../components/Wall.vue')
       },
       {
-        path: '/newpost',
-        name: 'Newpost',
+        path: 'newpost',
         component: () => import('../components/Newpost.vue')
       }
     ]
   },
   {
     path: '/login',
-    name: 'login',
     component: () => import('../components/Login.vue')
+  },
+  {
+    path: '/register',
+    component: () => import('../components/Register.vue')
   },
   {
     path: '*',

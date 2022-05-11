@@ -14,14 +14,11 @@ Vue.use(VueAxios, axios)
 Vue.use(require('vue-moment'))
 
 router.beforeEach((to, from, next) => {
-  // console.log(to.meta.requiresAuth)
-  // if(to.meta.requiresAuth){
-
-  // }
-  next()
+  // 如果路由轉不過來就來看這裡
+  if (to.meta.requiresAuth) { confirm('模擬登入狀態，請問是否已登入?') ? next('/wall') : next('/login') } else next()
 })
 
 new Vue({
   router,
-  render: h => h(App)
+  render: (h) => h(App)
 }).$mount('#app')
