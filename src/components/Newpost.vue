@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="card mb-5 rounded-0 border border-dark position-relative mt-3">
+    <div class="card mb-5 rounded-0 border border-dark position-relative">
       <h2 class="text-center py-3 mb-0">張貼動態</h2>
       <div
         class="position-absolute border border-dark border-2 w-100 py-4"
@@ -37,9 +37,6 @@
               @change="fileUpload($event.target.files)"
             />
           </label>
-          <!-- <ul class="list-unstyled">
-                    <li class="text-danger" v-for="error in errors" :key="error">{{ error }}</li>
-                  </ul> -->
         </div>
         <img
           v-if="src"
@@ -91,7 +88,8 @@ export default {
         image:
           'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
         userName: 'Rax Xu',
-        userPhoto: 'https://i.pravatar.cc/50'
+        userPhoto: 'https://i.pravatar.cc/50',
+        loading: true
       },
       src: ''
     }
@@ -113,7 +111,7 @@ export default {
         .catch((e) => console.log(e))
     },
     fileUpload (filedata) {
-      // console.log(filedata)
+      console.log(filedata)
     }
   }
 }
@@ -141,5 +139,9 @@ export default {
 }
 .fontNSTC {
   font: normal normal bold 16px/24px Noto Sans TC;
+}
+.loading {
+  width: 1rem;
+  height: 1rem;
 }
 </style>

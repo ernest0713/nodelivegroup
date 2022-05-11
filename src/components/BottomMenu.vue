@@ -3,14 +3,14 @@
     class="list-group border border-dark rounded-pill fixed-bottom bg-secondary d-md-none mx-1"
   >
     <ul class="d-flex justify-content-around mb-0 px-0">
-      <li class="list-group-item border-0 bg-secondary">
+      <li class="list-group-item border-0 bg-secondary rounded-pill">
         <router-link to="/wall">
           <div class="rounded-circle border border-dark p-2 bg-white">
             <span class="material-icons material-icons-outlined"> home </span>
           </div>
         </router-link>
       </li>
-      <li class="list-group-item border-0 bg-secondary rounded-pill">
+      <li class="list-group-item border-0 bg-secondary">
         <router-link to="/user/follower">
           <div
             class="d-flex align-items-center justify-content-center rounded-circle border border-dark ml-2 mr-3 p-2 bg-light"
