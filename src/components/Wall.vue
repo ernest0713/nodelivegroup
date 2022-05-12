@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active="isLoading"/>
     <div class="row">
       <div class="col-md-4 pr-md-1 mb-md-2 pr-3 mb-3">
         <select
@@ -152,7 +153,8 @@ export default {
     return {
       postsData: [],
       keyword: '',
-      hasComment: false
+      hasComment: false,
+      isLoading: false
     }
   },
   methods: {

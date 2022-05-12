@@ -7,11 +7,16 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueRouter from 'vue-router'
 
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/vue-loading.css'
+
 Vue.config.productionTip = false
 
 Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
 Vue.use(require('vue-moment'))
+
+Vue.component('loading', Loading)
 
 router.beforeEach((to, from, next) => {
   // 如果路由轉不過來就來看這裡

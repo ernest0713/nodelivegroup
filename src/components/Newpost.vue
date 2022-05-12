@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active="isLoading" />
     <div class="card mb-5 rounded-0 border border-dark position-relative">
       <h2 class="text-center py-3 mb-0">張貼動態</h2>
       <div
@@ -8,62 +9,69 @@
       ></div>
     </div>
     <div class="card border border-dark shadow-black p-5">
-      <form class="needs-validation">
-        <div class="form-group mb-3">
-          <ValidationProvider rules="required" v-slot="{ errors }">
-            <label for="content">
-              貼文內容
-              <span class="text-danger">*</span>
+      <ValidationObserver v-slot="{ invalid }">
+        <form class="needs-validation" @submit.prevent="sendData">
+          <div class="form-group mb-3">
+            <ValidationProvider rules="required" v-slot="{ errors }">
+              <label for="content">
+                貼文內容
+                <span class="text-danger">*</span>
+              </label>
+              <span class="ml-3 text-danger">{{ errors[0] }}</span>
+              <textarea
+                v-model="postData.content"
+                class="form-control border border-dark"
+                id="content"
+                rows="5"
+                placeholder="輸入您的貼文內容"
+              ></textarea>
+            </ValidationProvider>
+          </div>
+          <div class="input-group mb-2">
+            <label for="imgUpload" class="btn btn-dark">
+              上傳圖片
+              <input
+                class="d-none w-100 p-2"
+                id="imgUpload"
+                type="file"
+                name="imgUpload"
+                placeholder="請輸入網址"
+                @change="fileUpload($event.target.files)"
+              />
             </label>
-            <span class="ml-3 text-danger">{{ errors[0] }}</span>
-            <textarea
-              v-model="postData.content"
-              class="form-control border border-dark"
-              id="content"
-              rows="5"
-              placeholder="輸入您的貼文內容"
-            ></textarea>
-          </ValidationProvider>
-        </div>
-        <div class="input-group mb-2">
-          <label for="imgUpload" class="btn btn-dark">
-            上傳圖片
-            <input
-              class="d-none w-100 p-2"
-              id="imgUpload"
-              type="file"
-              name="imgUpload"
-              placeholder="請輸入網址"
-              @change="fileUpload($event.target.files)"
-            />
-          </label>
-        </div>
-        <img
-          v-if="src"
-          :src="src"
-          class="w-100 img-fluid mb-2"
-          style="height: 157px"
-        />
-        <p class="text-danger text-center mb-2 d-none">
-          圖片檔案過大，僅限 1mb 以下檔案
-          <br />
-          圖片格式錯誤，僅限 JPG、PNG 圖片
-        </p>
-        <div class="d-flex justify-content-center mt-5">
-          <a
-            @click.prevent="sendData"
-            class="w-75 btn btn-light border border-dark text-dark"
-          >
-            送出貼文
-          </a>
-        </div>
-      </form>
+          </div>
+          <img
+            v-if="src"
+            :src="src"
+            class="w-100 img-fluid mb-2"
+            style="height: 157px"
+          />
+          <p v-show="tooBig" class="text-danger text-center mb-2">
+            圖片檔案過大，僅限 1mb 以下檔案
+          </p>
+          <p v-show="fileType" class="text-danger text-center mb-2">
+            圖片格式錯誤，僅限 JPG、PNG 圖片
+          </p>
+          <div class="d-flex justify-content-center mt-5">
+            <a
+              type="submit"
+              class="w-75 btn btn-light border border-dark text-dark"
+              :class="{ 'bg-secondary': invalid }"
+              :disabled="invalid"
+            >
+              送出貼文
+            </a>
+          </div>
+        </form>
+      </ValidationObserver>
     </div>
   </div>
 </template>
 
 <script>
-import { ValidationProvider, extend } from 'vee-validate'
+/* eslint-disable no-useless-escape */
+
+import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
 import { required } from 'vee-validate/dist/rules'
 
 extend('required', {
@@ -71,30 +79,24 @@ extend('required', {
   message: '欄位需填寫'
 })
 
-extend('https', {
-  validate: (value) => {
-    return new RegExp(
-      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/
-    ).test(value)
-  },
-  message: '請輸入正確網址'
-})
-
 export default {
   data () {
     return {
       postData: {
-        conten: '',
-        image:
-          'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-        userName: 'Rax Xu',
-        userPhoto: 'https://i.pravatar.cc/50',
-        loading: true
+        user: '62741e710b0c853f222d8691',
+        content: '',
+        image: '',
+        type: 'person',
+        tags: ['test']
       },
-      src: ''
+      src: '',
+      isLoading: false,
+      tooBig: false,
+      fileType: false
     }
   },
   components: {
+    ValidationObserver,
     ValidationProvider
   },
   methods: {
@@ -111,7 +113,48 @@ export default {
         .catch((e) => console.log(e))
     },
     fileUpload (filedata) {
-      console.log(filedata)
+      const vm = this
+      const size = filedata[0].size
+      const type = filedata[0].type.split('/')[1]
+      const imgurUploadApi = 'https://api.imgur.com/3/image'
+      const form = new FormData()
+      const config = {
+        headers: {
+          Authorization: 'Client-ID ' + process.env.VUE_APP_IMGID
+        }
+      }
+      // console.log(filedata)
+      size > 1024024 ? (vm.tooBig = true) : (vm.tooBig = false)
+      type !== 'png' && type !== 'jpg'
+        ? (vm.fileType = true)
+        : (vm.fileType = false)
+      if (vm.tooBig === false && vm.fileType === false) {
+        form.append('image', filedata[0])
+        vm.isLoading = true
+        vm.$http
+          .post(imgurUploadApi, form, config)
+          .then((res) => {
+            vm.isLoading = false
+            if (res.data.success) {
+              vm.src = res.data.data.link
+              vm.postData.image = res.data.data.link
+              console.log(res.data)
+            } else {
+              console.log('error:', res.data)
+            }
+          })
+          .catch((err) => {
+            vm.isLoading = false
+            // console.log(err)
+            if (err.response.status === 429) {
+              // console.log(err.response)
+              alert(err.response.data.data.error + '\nimgur 伺服器忙碌中，請稍後在試！')
+            }
+          })
+      }
+      // setTimeout(() => {
+      //   vm.isLoading = false
+      // }, 1000)
     }
   }
 }
