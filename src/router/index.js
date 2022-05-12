@@ -14,10 +14,17 @@ const routes = [
       {
         path: 'wall',
         component: () => import('../components/Wall.vue')
+        // requiresAuth: true
       },
       {
         path: 'newpost',
         component: () => import('../components/Newpost.vue')
+        // requiresAuth: true
+      },
+      {
+        path: 'followers',
+        component: () => import('../components/Followers.vue')
+        // requiresAuth: true
       }
     ]
   },
