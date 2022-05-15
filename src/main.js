@@ -18,11 +18,11 @@ Vue.use(require('vue-moment'))
 
 Vue.component('loading', Loading)
 
-router.beforeEach((to, from, next) => {
-  // 如果路由轉不過來就來看這裡
-  // console.log(to.meata)
-  if (to.meta.requiresAuth) { confirm('模擬登入狀態，請問是否已登入?') ? next('/wall') : next('/login') } else next()
-})
+// router.beforeEach((to, from, next) => {
+//   // 如果路由轉不過來就來看這裡
+//   // console.log(to.meata)
+//   // if (to.meta.requiresAuth) { confirm('模擬登入狀態，請問是否已登入?') ? next('/wall') : next('/login') } else next()
+// })
 
 new Vue({
   router,

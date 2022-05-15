@@ -2,45 +2,35 @@
   <div>
     <section>
       <nav
-        class="navbar navbar-expand-lg navbar-light border-bottom border-3 border-dark"
+        class="navbar navbar-expand-lg navbar-light border-bottom"
       >
         <div class="container">
           <h1 class="fontPaytone mb-0">
-            <router-link to="/" class="navbar-brand"
-              >MetaWall
-            </router-link>
-            <!-- <a class="navbar-brand fs-1" href="#">MetaWall</a> -->
+            <router-link to="/wall" class="navbar-brand">MetaWall</router-link>
           </h1>
-          <div class="d-flex align-items-center">
+          <div class="btn-group">
             <img
-              src="https://i.pravatar.cc/50"
-              alt="user1"
-              class="me-2 img-fluid rounded-circle"
+              :src="headPhoto"
+              class="mr-2 img-fluid rounded-circle"
+              style="width:50px; height:50px;"
             />
-            <div class="dropdown bg-white mx-2">
-              <button
-                class="btn btn-white member"
-                type="button"
-                id="dropdownMenuButton1"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Member
+            <button
+              type="button"
+              class="btn member border-bottom dropdown-toggle"
+              data-toggle="dropdown"
+              data-display="static"
+              aria-expanded="false"
+            >
+              Member
+            </button>
+            <div class="dropdown-menu dropdown-menu-lg-right p-0">
+              <button class="dropdown-item border rounded-0 text-center px-5 py-3" type="button">我的貼文牆</button>
+              <button class="dropdown-item border rounded-0 text-center px-5 py-3" type="button">
+                修改資料
               </button>
-              <ul
-                class="dropdown-menu py-0"
-                aria-labelledby="dropdownMenuButton1"
-              >
-                <li class="border border-dark">
-                  <a class="dropdown-item" href="#">我的貼文牆</a>
-                </li>
-                <li class="border border-dark">
-                  <a class="dropdown-item" href="#">修改個人資料</a>
-                </li>
-                <li class="border border-dark">
-                  <a class="dropdown-item" href="#">登出</a>
-                </li>
-              </ul>
+              <button class="dropdown-item border rounded-0 text-center px-5 py-3" type="button">
+                登出
+              </button>
             </div>
           </div>
         </div>
@@ -49,17 +39,33 @@
   </div>
 </template>
 
+<script>
+export default {
+  data () {
+    return {
+      headPhoto: 'https://photos.google.com'
+    }
+  }
+}
+</script>
+
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=Paytone+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@700&family=Paytone+One&display=swap');
-.navbar-brand{
+
+.navbar-brand {
   font: normal normal normal 26px/36px Paytone One !important;
 }
-.member{
+.member {
   font: normal normal bold 16px/19px Azeret Mono;
 }
-.member{
-  border-radius: 0px;
-  border-bottom: 2px solid #000400;
+.border{
+  border: 2px solid #000400 !important;
+  &-bottom{
+    border-bottom: 2px solid #000400 !important;
+  }
+}
+.dropdown-toggle::after{
+  display: none;
 }
 </style>
