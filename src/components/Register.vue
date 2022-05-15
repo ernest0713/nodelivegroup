@@ -150,7 +150,7 @@ export default {
         console.log(res.data)
         if (res.data.status === 'success') {
           localStorage.setItem('token', res.data.user.token)
-          vm.$router.push('/wall')
+          vm.$router.push('/login')
           vm.isLoading = false
         }
       })
