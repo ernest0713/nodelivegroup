@@ -51,7 +51,7 @@
                     <span class="text-danger">{{ errors[0] }}</span>
                   </div>
                 </ValidationProvider>
-                <p class="text-danger text-center mb-2 d-none">
+                <p v-if="loginFaild" class="text-danger text-center mb-2">
                   帳號或密碼錯誤，請重新輸入！
                 </p>
                 <div class="mb-3">
@@ -92,7 +92,8 @@ export default {
     return {
       email: '',
       password: '',
-      isLoading: false
+      isLoading: false,
+      loginFaild: false
     }
   },
   components: {
@@ -108,12 +109,22 @@ export default {
       }
       vm.isLoading = true
       const api = 'https://safe-brushlands-13562.herokuapp.com/users/sign_in'
-      vm.$http.post(api, userData).then((res) => {
-        if (res.success) {
-          vm.$router.push('/wall')
+      vm.$http
+        .post(api, userData)
+        .then((res) => {
+          if (res.data.status === 'success') {
+            vm.$router.push('/wall')
+            vm.isLoading = false
+          }
+        })
+        .catch((e) => {
           vm.isLoading = false
-        }
-      })
+          if (e.response.status === 400) {
+            vm.loginFaild = true
+          } else {
+            console.log(e.response)
+          }
+        })
     }
   }
 }
