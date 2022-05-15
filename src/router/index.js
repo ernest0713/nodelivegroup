@@ -25,6 +25,20 @@ const routes = [
         path: 'followers',
         component: () => import('../components/Followers.vue')
         // requiresAuth: true
+      },
+      {
+        path: 'perfile',
+        component: () => import('../components/Perfile.vue')
+        // requiresAuth: true
+      },
+      {
+        path: 'likes',
+        component: () => import('../components/Likes.vue')
+        // requiresAuth: true
+      },
+      {
+        path: 'user/:id',
+        component: () => import('../components/User.vue')
       }
     ]
   },

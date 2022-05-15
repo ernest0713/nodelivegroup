@@ -15,7 +15,7 @@
 
 <script>
 import Navbar from '@/components/Navbar.vue'
-import Sidemenu from '@/components/Sidemenu.vue'
+import Sidemenu from '@/components/Menu.vue'
 import BottomMenu from '@/components/BottomMenu.vue'
 
 export default {

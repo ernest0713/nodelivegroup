@@ -162,9 +162,6 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700&display=swap');
-.border {
-  border-width: 2px !important;
-}
 .card {
   box-shadow: 0px 3px 0px #000400;
   border: 2px solid #000400;

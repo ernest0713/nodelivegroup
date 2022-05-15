@@ -1,6 +1,6 @@
 <template>
   <div>
-    <loading :active="isLoading"/>
+    <loading :active="isLoading" />
     <div class="row">
       <div class="col-md-4 pr-md-1 mb-md-2 pr-3 mb-3">
         <select
@@ -159,6 +159,7 @@ export default {
   },
   methods: {
     getdata () {
+      this.isLoading = true
       const filter = {
         keyword: this.keyword, // 搜尋關鍵字
         sortby: 'datetime_pub', // 本次只提供最新貼文排序
@@ -170,10 +171,14 @@ export default {
       this.$http
         .post(api, filter)
         .then((res) => {
+          this.isLoading = false
           this.postsData = res.data.payload.posts
           // console.log(this.postsData)
         })
-        .catch((e) => console.log(e))
+        .catch((e) => {
+          this.isLoading = false
+          console.log(e)
+        })
     }
   },
   created () {

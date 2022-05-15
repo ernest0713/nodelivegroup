@@ -12,7 +12,7 @@
       </div>
       <ul class="p-0 list-unstyled">
         <li class="h-100 border-0 mb-4">
-          <router-link to="/" class="text-decoration-none text-dark">
+          <router-link to="/perfile" class="text-decoration-none text-dark">
             <div class="d-flex align-items-center">
               <div
                 class="d-flex align-items-center ml-2 mr-3"
@@ -30,7 +30,7 @@
           </router-link>
         </li>
         <li class="h-100 mb-4">
-          <router-link to="/" class="text-decoration-none text-dark">
+          <router-link to="/followers" class="text-decoration-none text-dark">
             <div class="d-flex align-items-center">
               <div
                 class="d-flex align-items-center justify-content-center rounded-circle border border-dark ml-2 mr-3 p-2 bg-light"
@@ -43,7 +43,7 @@
           </router-link>
         </li>
         <li class="h-100 border-0">
-          <router-link to="/" class="text-decoration-none text-dark">
+          <router-link to="/likes" class="text-decoration-none text-dark">
             <div class="media d-flex align-items-center">
               <div
                 class="d-flex align-items-center justify-content-center rounded-circle border border-dark ml-2 mr-3 p-2 bg-light hover-primary"
