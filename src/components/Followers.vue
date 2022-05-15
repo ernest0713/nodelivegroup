@@ -31,7 +31,8 @@
 export default {
   data () {
     return {
-      msg: 'this is followers page'
+      msg: 'this is followers page',
+      isLoading: false
     }
   }
 }

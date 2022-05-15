@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active="isLoading" />
     <section class="vh-100 d-flex justify-content-center align-items-center">
       <div
         class="card card-login px-lg-7 px-md-3 px-1 bg-light border-2 shadow-gray rounded-0 py-7 mx-md-0 mx-2"
@@ -17,56 +18,58 @@
               MetaWall
             </h1>
             <p class="h4 text-center mb-4">到元宇宙展開全新社交圈</p>
-            <ValidationObserver v-slot="{invalid}">
-            <form @submit.prevent="sendLogin">
-              <ValidationProvider rules="required|email" v-slot="{ errors }">
-                <div class="form-group mb-3">
-                  <label class="w-100" for="userEmail">
-                    <input
-                      v-model="account"
-                      type="text"
-                      class="form-control px-2 py-4 loginInput"
-                      id="userEmail"
-                      aria-describedby="emailHelp"
-                      name="帳號"
-                      placeholder="Email"
-                    />
-                  </label>
-                  <span class="d-block text-danger">{{ errors[0] }}</span>
+            <ValidationObserver v-slot="{ invalid }">
+              <form @submit.prevent="login">
+                <ValidationProvider rules="required" v-slot="{ errors }">
+                  <div class="form-group mb-3">
+                    <label class="w-100" for="userEmail">
+                      <input
+                        v-model="email"
+                        type="text"
+                        class="form-control px-2 py-4 loginInput"
+                        id="userEmail"
+                        aria-describedby="emailHelp"
+                        name="帳號"
+                        placeholder="Email"
+                      />
+                    </label>
+                    <span class="d-block text-danger">{{ errors[0] }}</span>
+                  </div>
+                </ValidationProvider>
+                <ValidationProvider rules="required" v-slot="{ errors }">
+                  <div class="form-group mb-3">
+                    <label class="w-100" for="userPassword">
+                      <input
+                        v-model="password"
+                        type="password"
+                        class="form-control px-2 py-4 loginInput"
+                        id="userPassword"
+                        placeholder="Password"
+                        name="密碼"
+                      />
+                    </label>
+                    <span class="text-danger">{{ errors[0] }}</span>
+                  </div>
+                </ValidationProvider>
+                <p class="text-danger text-center mb-2 d-none">
+                  帳號或密碼錯誤，請重新輸入！
+                </p>
+                <div class="mb-3">
+                  <button
+                    type="submit"
+                    class="btn btn-primary w-100 loginBtn"
+                    :class="{ 'bg-secondary': invalid }"
+                    :disabled="invalid"
+                  >
+                    登入
+                  </button>
                 </div>
-              </ValidationProvider>
-              <ValidationProvider rules="required" v-slot="{ errors }">
-                <div class="form-group mb-3">
-                  <label class="w-100" for="userPassword">
-                    <input
-                      v-model="password"
-                      type="password"
-                      class="form-control px-2 py-4 loginInput"
-                      id="userPassword"
-                      placeholder="Password"
-                      name="密碼"
-                    />
-                  </label>
-                  <span class="text-danger">{{ errors[0] }}</span>
+                <div class="text-center">
+                  <router-link to="/register" class="text-dark"
+                    >註冊帳號</router-link
+                  >
                 </div>
-              </ValidationProvider>
-              <p class="text-danger text-center mb-2 d-none">
-                帳號或密碼錯誤，請重新輸入！
-              </p>
-              <div class="mb-3">
-                <button
-                  type="submit"
-                  class="btn btn-primary w-100 loginBtn"
-                  :class="{'bg-secondary':invalid}"
-                  :disabled="invalid"
-                >
-                  登入
-                </button>
-              </div>
-              <div class="text-center">
-                  <router-link to="/register" class="text-dark">註冊帳號</router-link>
-              </div>
-            </form>
+              </form>
             </ValidationObserver>
           </div>
         </div>
@@ -77,22 +80,19 @@
 
 <script>
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
-import { required, email } from 'vee-validate/dist/rules'
+import { required } from 'vee-validate/dist/rules'
 
 extend('required', {
   ...required,
   message: '{_field_}未填寫'
 })
-extend('email', {
-  ...email,
-  message: '帳號為 Email 格式，請填寫正確的 Email'
-})
 
 export default {
   data () {
     return {
-      account: '',
-      password: ''
+      email: '',
+      password: '',
+      isLoading: false
     }
   },
   components: {
@@ -100,12 +100,20 @@ export default {
     ValidationProvider
   },
   methods: {
-    sendLogin () {
-      const api = ''
-      this.$http.post(api)
-    },
-    showerr (errors) {
-      console.log(errors)
+    login () {
+      const vm = this
+      const userData = {
+        email: vm.email,
+        password: vm.password
+      }
+      vm.isLoading = true
+      const api = 'https://safe-brushlands-13562.herokuapp.com/users/sign_in'
+      vm.$http.post(api, userData).then((res) => {
+        if (res.success) {
+          vm.$router.push('/wall')
+          vm.isLoading = false
+        }
+      })
     }
   }
 }

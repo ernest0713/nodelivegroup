@@ -12,7 +12,7 @@
       </div>
       <ul class="p-0 list-unstyled">
         <li class="h-100 border-0 mb-4">
-          <router-link to="/perfile" class="text-decoration-none text-dark">
+          <router-link to="/perfile/updateInfo" class="text-decoration-none text-dark">
             <div class="d-flex align-items-center">
               <div
                 class="d-flex align-items-center ml-2 mr-3"

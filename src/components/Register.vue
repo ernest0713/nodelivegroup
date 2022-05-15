@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active="isLoading" />
     <section class="vh-100 d-flex justify-content-center align-items-center">
       <div
         class="card card-login px-lg-7 px-3 bg-light border-2 shadow-gray rounded-0 py-7"
@@ -25,7 +26,7 @@
                   <div class="form-group mb-3">
                     <label class="w-100" for="nickName">
                       <input
-                        v-model="nickName"
+                        v-model="userName"
                         type="text"
                         class="form-control px-2 py-4 registerInput"
                         id="nickName"
@@ -41,8 +42,8 @@
                   <div class="form-group mb-3">
                     <label class="w-100" for="userEmail">
                       <input
-                        v-model="account"
-                        type="text"
+                        v-model="email"
+                        type="email"
                         class="form-control px-2 py-4 registerInput"
                         id="userEmail"
                         aria-describedby="emailHelp"
@@ -53,7 +54,14 @@
                     <span class="d-block text-danger">{{ errors[0] }}</span>
                   </div>
                 </ValidationProvider>
-                <ValidationProvider rules="required|min:8|alpha_num" v-slot="{ errors }">
+                <ValidationProvider
+                  :rules="{
+                    required: true,
+                    min: 8,
+                    regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
+                  }"
+                  v-slot="{ errors }"
+                >
                   <div class="form-group mb-3">
                     <label class="w-100" for="userPassword">
                       <input
@@ -94,7 +102,7 @@
 <script>
 /* eslint-disable camelcase */
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
-import { required, email, min, alpha_num } from 'vee-validate/dist/rules'
+import { required, email, min, regex } from 'vee-validate/dist/rules'
 
 extend('required', {
   ...required,
@@ -108,17 +116,19 @@ extend('min', {
   ...min,
   message: '{_field_}至少 {length} 個字元以上'
 })
-extend('alpha_num', {
-  ...alpha_num,
-  message: '{_field_}需使用中英混合'
+extend('regex', {
+  ...regex,
+  message: '{_field_}需使用英數混合，第一個字母需大寫及包含1個小寫字母'
 })
 
 export default {
   data () {
     return {
-      nickName: '',
-      account: '',
-      password: ''
+      userName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      isLoading: false
     }
   },
   components: {
@@ -127,15 +137,23 @@ export default {
   },
   methods: {
     sendRegister () {
-      // const api = ''
-      // this.$http.post(api)
-      const success = confirm('假設已經成功')
-      if (success) {
-        this.$router.push('/wall')
+      const vm = this
+      vm.isLoading = true
+      const userData = {
+        userName: vm.userName,
+        email: vm.email,
+        password: vm.password,
+        confirmPassword: vm.password
       }
-    },
-    showerr (errors) {
-      console.log(errors)
+      const api = 'https://safe-brushlands-13562.herokuapp.com/users/sign_up'
+      vm.$http.post(api, userData).then((res) => {
+        console.log(res.data)
+        if (res.data.status === 'success') {
+          localStorage.setItem('token', res.data.user.token)
+          vm.$router.push('/wall')
+          vm.isLoading = false
+        }
+      })
     }
   }
 }

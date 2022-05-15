@@ -28,8 +28,18 @@ const routes = [
       },
       {
         path: 'perfile',
-        component: () => import('../components/Perfile.vue')
+        component: () => import('../components/Perfile.vue'),
         // requiresAuth: true
+        children: [
+          {
+            path: 'updateInfo',
+            component: () => import('../components/UpdateInfo.vue')
+          },
+          {
+            path: 'updatePwd',
+            component: () => import('../components/UpdatePwd.vue')
+          }
+        ]
       },
       {
         path: 'likes',
