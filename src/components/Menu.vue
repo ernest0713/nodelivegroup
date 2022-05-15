@@ -5,7 +5,7 @@
       <div class="mb-4">
         <router-link
           to="/newpost"
-          class="btn btn-primary w-100 postBtn d-flex align-items-center justify-content-center"
+          class="btn btn-primary menu-btn w-100 d-flex align-items-center justify-content-center p-3"
         >
           張貼動態
         </router-link>
@@ -64,8 +64,7 @@
 .border {
   border: 2px solid #000400 !important;
 }
-.postBtn {
-  height: 3.5rem;
+.menu-btn {
   box-shadow: -2px 2px 0px #000400;
   background: #03438d 0% 0% no-repeat padding-box;
   border: 2px solid #000400;

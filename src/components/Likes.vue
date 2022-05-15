@@ -60,7 +60,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700&display=swap');
 .card {
   box-shadow: 0px 3px 0px #000400;
   border: 2px solid #000400;
@@ -68,19 +67,5 @@ export default {
 }
 .border {
   border: 2px solid #000400 !important;
-}
-.postBtn {
-  height: 3.5rem;
-  box-shadow: -2px 2px 0px #000400;
-  background: #03438d 0% 0% no-repeat padding-box;
-  border: 2px solid #000400;
-  border-radius: 8px;
-}
-.fontNSTC {
-  font: normal normal bold 16px/24px Noto Sans TC;
-}
-.loading {
-  width: 1rem;
-  height: 1rem;
 }
 </style>
